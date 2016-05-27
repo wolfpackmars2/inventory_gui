@@ -967,7 +967,7 @@
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>png/reload-2x.png</normaloff>png/reload-2x.png</iconset>
+     <normaloff>ui/img/reload-2x.png</normaloff>ui/img/reload-2x.png</iconset>
    </property>
   </widget>
  </widget>

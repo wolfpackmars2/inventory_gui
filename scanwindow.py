@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scanwindow.ui'
 #
-# Created: Mon May 23 03:52:52 2016
+# Created: Fri May 27 13:01:23 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -336,7 +336,7 @@ class Ui_Form(object):
         self.btnRefreshCameras.setGeometry(QtCore.QRect(365, 43, 31, 27))
         self.btnRefreshCameras.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("png/reload-2x.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("ui/img/reload-2x.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnRefreshCameras.setIcon(icon)
         self.btnRefreshCameras.setObjectName(_fromUtf8("btnRefreshCameras"))
 
