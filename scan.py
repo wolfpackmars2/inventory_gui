@@ -29,14 +29,16 @@ class CameraThread(QtCore.QThread):
         self.width = self.camera.get(3)
         self.fps = self.getfps()
         self.last_image = None
+        self.active = True
 
     def __del__(self):
+        self.active = False
         self.wait()
         if self.isRunning():
             self.closeCamera()
 
     def run(self):
-        while(True):
+        while(self.active):
             retval, self.last_image = self.camera.read()
             self.camReady.emit()
 
@@ -63,10 +65,13 @@ class CameraThread(QtCore.QThread):
     def openCamera(self, port=0):
         """Opens a camera by port"""
         self.camera = cv2.VideoCapture(port)
+        #Following may be required for some cameras
+        if not self.isRunning():
+            self.camera.open()
 
     def closeCamera(self):
         """Deactivates the camera"""
-        self.camera.exit()
+        self.camera.release()
 
     def read(self):
         """Gets a frame from the camera"""
@@ -100,6 +105,13 @@ class StartScan(QtGui.QWidget):
         #fw.write("ID,TimeStamp,UPC,PNGImage(Base64)\n")
         #fw.close()
         #self.refreshCameras()
+
+    def closeEvent(self, QCloseEvent):
+        """Gracefully shutdown the camera"""
+        self.camera.active = False
+        #Delay 1 frame to allow camera to finish any in-process frame grabs
+        time.sleep(1 / self.camera.fps)
+        self.camera.closeCamera()
 
     def changeCamera(self, port=0):
         """Selects and opens a new camera for input"""

@@ -46,11 +46,11 @@ class LocalData():
 
     def delete_row_byid(self, row_id):
         """Deletes a single row from the database"""
-        self.cur.execute('DELETE * FROM tblInventory WHERE ROWID = ?', (row_id))
+        self.cur.execute('DELETE FROM tblInventory WHERE ROWID = ?', (row_id))
 
     def delete_rows_bybarcode(self, barcode_id):
         """Deletes all rows matching a barcode_id"""
-        self.cur.execute('DELETE * FROM tblInventory WHERE barcode_id = ?', (barcode_id))
+        self.cur.execute('DELETE FROM tblInventory WHERE barcode_id = ?', (barcode_id))
 
     def get_row_byid(self, row_id):
         """Returns a single row from the database"""
