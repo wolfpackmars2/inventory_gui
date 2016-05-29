@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scanwindow.ui'
 #
-# Created: Sat May 28 22:12:07 2016
+# Created: Sun May 29 12:02:31 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -95,6 +95,7 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.lblLiveView.sizePolicy().hasHeightForWidth())
         self.lblLiveView.setSizePolicy(sizePolicy)
         self.lblLiveView.setMinimumSize(QtCore.QSize(300, 225))
+        self.lblLiveView.setMaximumSize(QtCore.QSize(300, 225))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -253,6 +254,7 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.lblPreview.sizePolicy().hasHeightForWidth())
         self.lblPreview.setSizePolicy(sizePolicy)
         self.lblPreview.setMinimumSize(QtCore.QSize(300, 225))
+        self.lblPreview.setMaximumSize(QtCore.QSize(300, 225))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)

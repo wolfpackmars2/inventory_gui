@@ -94,6 +94,7 @@ class StartScan(QtGui.QWidget):
         self.saved_image_format = ".jpg"
         self.live_image_format = ".jpg"
         self.record_count = 0
+        self.ui.txtInput.setFocus()
 
     def closeEvent(self, QCloseEvent):
         """Gracefully shutdown the camera"""

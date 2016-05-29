@@ -137,6 +137,12 @@
          <height>225</height>
         </size>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>300</width>
+         <height>225</height>
+        </size>
+       </property>
        <property name="palette">
         <palette>
          <active>
@@ -591,6 +597,12 @@
         </sizepolicy>
        </property>
        <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>225</height>
+        </size>
+       </property>
+       <property name="maximumSize">
         <size>
          <width>300</width>
          <height>225</height>
