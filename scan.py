@@ -87,6 +87,7 @@ class StartScan(QtGui.QMainWindow):
         self.camera = CameraThread(self.camera_port)
         self.camera.camReady.connect(self.updateLiveView)
         self.camera.imgSaved.connect(self.updatePreview)
+        self.ui.dockSnapshotPreview.resizeEvent = self.resizePreview
         self.camera.start()
         self.last_text = None
         self.last_image = None
@@ -135,13 +136,19 @@ class StartScan(QtGui.QMainWindow):
         retval, img = cv2.imencode(self.live_image_format, self.camera.last_image)
         im = QtGui.QImage.fromData(img)
         pix = QtGui.QPixmap(im)
+        pix = pix.scaled(self.ui.dockLivePreview.size(), QtCore.Qt.KeepAspectRatio)
         self.ui.lblLiveView.setPixmap(pix)
 
     def updatePreview(self, image_file):
         """Updates the preview window of the last image written"""
         pix = QtGui.QPixmap(image_file)
-        pix = pix.scaled(self.ui.lblPreview.size(), QtCore.Qt.KeepAspectRatio)
+        pix = pix.scaled(self.ui.dockSnapshotPreview.size(), QtCore.Qt.KeepAspectRatio)
         self.ui.lblPreview.setPixmap(pix)
+
+    def resizePreview(self, event):
+        """Refreshes the preview window when the dock is resized"""
+        if self.last_image is not None and os.path.exists(self.last_image):
+            self.updatePreview(self.last_image)
 
     def refreshCameras(self):
         """Gets the available cameras and populates the combo box"""

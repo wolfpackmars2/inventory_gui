@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scanwindow.ui'
 #
-# Created: Sun May 29 14:44:25 2016
+# Created: Sun May 29 14:57:07 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -452,7 +452,7 @@ class Ui_MainWindow(object):
         self.label_2.setBuddy(self.txtHistory)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
