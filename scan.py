@@ -2,7 +2,7 @@ import sys, cv2, time, arrow
 import os
 import data
 from PyQt4 import QtCore, QtGui
-from scanwindow import Ui_Form
+from scanwindow import Ui_MainWindow
 
 # TODO: Add camera selection to combobox
 # TODO: Query UPC DB online for unique bar codes
@@ -71,11 +71,12 @@ class CameraThread(QtCore.QThread):
         """Gets a frame from the camera"""
         return self.camera.read() # Returnvalue, PILImage
 
-class StartScan(QtGui.QWidget):
+
+class StartScan(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         self.db = data.LocalData()
-        self.ui = Ui_Form()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.btnTakePhoto.clicked.connect(self._snapshot)
         self.ui.btnWrite.clicked.connect(self.writeout)
@@ -99,9 +100,9 @@ class StartScan(QtGui.QWidget):
     def closeEvent(self, QCloseEvent):
         """Gracefully shutdown the camera"""
         self.camera.active = False
-        #Save any pending data
+        # Save any pending data
         self.writeout()
-        #Delay 1 frame to allow camera to finish any in-process frame grabs
+        # Delay 1 frame to allow camera to finish any in-process frame grabs
         time.sleep(1 / self.camera.fps)
         self.camera.closeCamera()
 
