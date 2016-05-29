@@ -79,7 +79,6 @@ class StartScan(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.btnTakePhoto.clicked.connect(self._snapshot)
-        self.ui.btnWrite.clicked.connect(self.writeout)
         self.ui.btnRefreshCameras.clicked.connect(self.refreshCameras)
         self.ui.cmbCamera.currentIndexChanged.connect(self.changeCamera)
         self.ui.txtInput.returnPressed.connect(self.getinput)
@@ -136,7 +135,7 @@ class StartScan(QtGui.QMainWindow):
         retval, img = cv2.imencode(self.live_image_format, self.camera.last_image)
         im = QtGui.QImage.fromData(img)
         pix = QtGui.QPixmap(im)
-        pix = pix.scaled(self.ui.dockLivePreview.size(), QtCore.Qt.KeepAspectRatio)
+        pix = pix.scaled(self.ui.lblLiveView.size(), QtCore.Qt.KeepAspectRatio)
         self.ui.lblLiveView.setPixmap(pix)
 
     def updatePreview(self, image_file):
@@ -182,6 +181,7 @@ class StartScan(QtGui.QMainWindow):
         if self.ui.txtInput.text() != "":
             self.last_text = self.ui.txtInput.text()
             self.snapshot(self.last_text)
+
             self.ui.txtHistory.setPlainText(str(self.record_count) +
                                             ": " +
                                             self.last_text +
