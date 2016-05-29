@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scanwindow.ui'
 #
-# Created: Sat May 28 14:07:48 2016
+# Created: Sat May 28 22:12:07 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,9 +50,6 @@ class Ui_Form(object):
         self.verticalLayout_5.addLayout(self.verticalLayout_4)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.btnImport002 = QtGui.QPushButton(Form)
-        self.btnImport002.setObjectName(_fromUtf8("btnImport002"))
-        self.horizontalLayout.addWidget(self.btnImport002)
         self.btnTakePhoto = QtGui.QPushButton(Form)
         self.btnTakePhoto.setObjectName(_fromUtf8("btnTakePhoto"))
         self.horizontalLayout.addWidget(self.btnTakePhoto)
@@ -412,7 +409,6 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.label_3.setText(_translate("Form", "Camera", None))
         self.btnRefreshCameras.setText(_translate("Form", "Refresh &Cameras", None))
-        self.btnImport002.setText(_translate("Form", "Import 002", None))
         self.btnTakePhoto.setText(_translate("Form", "Take &Snapshot", None))
         self.btnWrite.setText(_translate("Form", "&Write to Disk", None))
         self.label.setText(_translate("Form", "Product ID", None))

@@ -49,13 +49,6 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QPushButton" name="btnImport002">
-           <property name="text">
-            <string>Import 002</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="btnTakePhoto">
            <property name="text">
             <string>Take &amp;Snapshot</string>

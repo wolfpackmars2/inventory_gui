@@ -1,16 +1,10 @@
-import sys, cv2, datetime, base64, time
+import sys, cv2, time, arrow
 import os
 import data
 from PyQt4 import QtCore, QtGui
 from scanwindow import Ui_Form
 
-# TODO: Split files to maximum 250mb or less
 # TODO: Add camera selection to combobox
-# TODO: Add delay between camera.read operations
-# TODO: Test FRAMERATE of camera, round up, and use this to set camera read delay
-# TODO: for camera delay, use a timer ?
-# TODO: Add hot keys for buttons
-# TODO: Change format for records
 # TODO: Query UPC DB online for unique bar codes
 # TODO: Add tests!
 
@@ -27,7 +21,7 @@ class CameraThread(QtCore.QThread):
         self.camera.set(4, 1200) # height
         self.height = self.camera.get(4)
         self.width = self.camera.get(3)
-        self.fps = self.getfps()
+        self.fps = self.get_fps()
         self.last_image = None
         self.active = True
 
@@ -42,8 +36,8 @@ class CameraThread(QtCore.QThread):
             retval, self.last_image = self.camera.read()
             self.camReady.emit()
 
-    def getfps(self):
-        """Returns the FPS of the opened camera"""
+    def get_fps(self):
+        """Returns the approximate FPS of the opened camera"""
         num_frames = 15
         start = time.time()
         for i in range(0, num_frames):
@@ -53,7 +47,7 @@ class CameraThread(QtCore.QThread):
         fps = num_frames / seconds
         return fps
 
-    def save(self, image_file):
+    def save_image(self, image_file):
         """Save image to disk"""
         cv2.imwrite(image_file, self.last_image)
         self.imgSaved.emit(image_file)
@@ -86,7 +80,6 @@ class StartScan(QtGui.QWidget):
         self.ui.btnTakePhoto.clicked.connect(self._snapshot)
         self.ui.btnWrite.clicked.connect(self.writeout)
         self.ui.btnRefreshCameras.clicked.connect(self.refreshCameras)
-        self.ui.btnImport002.clicked.connect(self.import_002)
         self.ui.cmbCamera.currentIndexChanged.connect(self.changeCamera)
         self.ui.txtInput.returnPressed.connect(self.getinput)
         self.camera_port = 0
@@ -100,16 +93,13 @@ class StartScan(QtGui.QWidget):
         os.makedirs(self.image_folder, exist_ok=True)
         self.saved_image_format = ".jpg"
         self.live_image_format = ".jpg"
-        #self.data_file = "./" + datetime.datetime.now().strftime('%Y%m%d.%H%M%S') + '.csv'
         self.record_count = 0
-        #fw = open(self.data_file, "w")
-        #fw.write("ID,TimeStamp,UPC,PNGImage(Base64)\n")
-        #fw.close()
-        #self.refreshCameras()
 
     def closeEvent(self, QCloseEvent):
         """Gracefully shutdown the camera"""
         self.camera.active = False
+        #Save any pending data
+        self.writeout()
         #Delay 1 frame to allow camera to finish any in-process frame grabs
         time.sleep(1 / self.camera.fps)
         self.camera.closeCamera()
@@ -132,19 +122,11 @@ class StartScan(QtGui.QWidget):
         self.last_image = self.image_folder + \
                           str(prod_id) + \
                           '-' + \
-                          str(time.time()) + \
+                          str(arrow.now('local').format('YYYYMMDD.HHmmss.SS')) + \
                           self.saved_image_format
-        self.camera.save(self.last_image)
+        self.camera.save_image(self.last_image)
         self.ui.txtInput.setFocus()
         return self.last_image
-
-    def import_002(self):
-        """Prompts user for filename of csv file to import"""
-        csv_file, ok = QtGui.QInputDialog.getText(self, "CSV File Path", "File:")
-        if ok:
-            if os.path.exists(csv_file):
-                csvw = data.CSV_Data(csv_file, self.db.data_file)
-                csvw.import_from_csv_002()
 
     def updateLiveView(self):
         """Updates the live camera view"""
@@ -179,19 +161,8 @@ class StartScan(QtGui.QWidget):
         if self.last_image is None:
             self.last_image = ""
         if self.last_text is not None:
-            #f = open(self.image_file + self.saved_image_format, "rb").read()
-            #fw = open(self.data_file, "a")
             self.db.put_row(self.last_text, self.last_image)
             self.db.do_commit()
-            #fw.write(str(self.record_count) +
-            #         ',' +
-            #         str(datetime.datetime.now()) +
-            #         ',' +
-            #         self.last_text +
-            #         ',' +
-            #         base64.b64encode(f).decode() +
-            #         '\n')
-            #fw.close()
             self.last_text = None
             self.record_count += 1
             self.ui.txtInput.setFocus()
