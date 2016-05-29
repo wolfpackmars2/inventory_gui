@@ -83,9 +83,10 @@ class StartScan(QtGui.QWidget):
         self.db = data.LocalData()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.btnTakePhoto.clicked.connect(self.snapshot)
+        self.ui.btnTakePhoto.clicked.connect(self._snapshot)
         self.ui.btnWrite.clicked.connect(self.writeout)
         self.ui.btnRefreshCameras.clicked.connect(self.refreshCameras)
+        self.ui.btnImport002.clicked.connect(self.import_002)
         self.ui.cmbCamera.currentIndexChanged.connect(self.changeCamera)
         self.ui.txtInput.returnPressed.connect(self.getinput)
         self.camera_port = 0
@@ -117,16 +118,33 @@ class StartScan(QtGui.QWidget):
         """Selects and opens a new camera for input"""
         pass
 
-    def snapshot(self, id):
+    def _snapshot(self):
+        """Creates snapshot from button press"""
+        self.snapshot()
+
+    def snapshot(self, prod_id=None):
         """Gets a frame from the camera and returns its path"""
+        if prod_id is None:
+            if self.last_text is None:
+                prod_id = '0'
+            else:
+                prod_id = self.last_text
         self.last_image = self.image_folder + \
-                     id + \
-                     '-' + \
-                     str(time.time()) + \
-                     self.saved_image_format
+                          str(prod_id) + \
+                          '-' + \
+                          str(time.time()) + \
+                          self.saved_image_format
         self.camera.save(self.last_image)
         self.ui.txtInput.setFocus()
         return self.last_image
+
+    def import_002(self):
+        """Prompts user for filename of csv file to import"""
+        csv_file, ok = QtGui.QInputDialog.getText(self, "CSV File Path", "File:")
+        if ok:
+            if os.path.exists(csv_file):
+                csvw = data.CSV_Data(csv_file, self.db.data_file)
+                csvw.import_from_csv_002()
 
     def updateLiveView(self):
         """Updates the live camera view"""
@@ -158,9 +176,9 @@ class StartScan(QtGui.QWidget):
 
     def writeout(self):
         """Writes a record to the data file"""
-        if self.last_image == None:
+        if self.last_image is None:
             self.last_image = ""
-        if self.last_text != None:
+        if self.last_text is not None:
             #f = open(self.image_file + self.saved_image_format, "rb").read()
             #fw = open(self.data_file, "a")
             self.db.put_row(self.last_text, self.last_image)
