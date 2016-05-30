@@ -3,3 +3,4 @@
 .idea
 *.db
 ./img/*
+./sql/ignored
