@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scanwindow.ui'
 #
-# Created: Sun May 29 16:50:10 2016
+# Created: Sun May 29 21:05:38 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -93,13 +93,20 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.livePreviewLayout = QtGui.QGridLayout()
-        self.livePreviewLayout.setObjectName(_fromUtf8("livePreviewLayout"))
+        self.verticalLayout_4 = QtGui.QVBoxLayout()
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setContentsMargins(-1, 5, -1, -1)
+        self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
+        self.livePreviewContainer = QtGui.QWidget(self.dockWidgetContents)
+        self.livePreviewContainer.setObjectName(_fromUtf8("livePreviewContainer"))
+        self.gridLayout = QtGui.QGridLayout(self.livePreviewContainer)
+        self.gridLayout.setMargin(0)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.livePreviewLayout.addItem(spacerItem, 0, 1, 1, 1)
+        self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.livePreviewLayout.addItem(spacerItem1, 1, 0, 1, 1)
-        self.lblLiveView = QtGui.QLabel(self.dockWidgetContents)
+        self.gridLayout.addItem(spacerItem1, 1, 0, 1, 1)
+        self.lblLiveView = QtGui.QLabel(self.livePreviewContainer)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -252,16 +259,12 @@ class Ui_MainWindow(object):
         self.lblLiveView.setScaledContents(True)
         self.lblLiveView.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.lblLiveView.setObjectName(_fromUtf8("lblLiveView"))
-        self.livePreviewLayout.addWidget(self.lblLiveView, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.lblLiveView, 1, 1, 1, 1)
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.livePreviewLayout.addItem(spacerItem2, 1, 2, 1, 1)
+        self.gridLayout.addItem(spacerItem2, 1, 2, 1, 1)
         spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.livePreviewLayout.addItem(spacerItem3, 2, 1, 1, 1)
-        self.verticalLayout.addLayout(self.livePreviewLayout)
-        self.verticalLayout_4 = QtGui.QVBoxLayout()
-        self.verticalLayout_4.setSpacing(0)
-        self.verticalLayout_4.setContentsMargins(-1, 5, -1, -1)
-        self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
+        self.gridLayout.addItem(spacerItem3, 2, 1, 1, 1)
+        self.verticalLayout_4.addWidget(self.livePreviewContainer)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.label_3 = QtGui.QLabel(self.dockWidgetContents)

@@ -135,7 +135,7 @@ class StartScan(QtGui.QMainWindow):
         retval, img = cv2.imencode(self.live_image_format, self.camera.last_image)
         im = QtGui.QImage.fromData(img)
         pix = QtGui.QPixmap(im)
-        pix = pix.scaled(self.ui.lblLiveView.size(), QtCore.Qt.KeepAspectRatio)
+        pix = pix.scaled(self.ui.livePreviewContainer.size(), QtCore.Qt.KeepAspectRatio)
         self.ui.lblLiveView.setPixmap(pix)
 
     def updatePreview(self, image_file):
