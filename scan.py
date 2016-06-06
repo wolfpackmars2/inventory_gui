@@ -1,6 +1,10 @@
-import sys, cv2, time, arrow
+import sys
+import cv2
+import time
+import arrow
 import os
 import data
+import Util
 from PyQt4 import QtCore, QtGui
 from scanwindow import Ui_MainWindow
 
@@ -75,7 +79,7 @@ class CameraThread(QtCore.QThread):
 class StartScan(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
-        self.db = data.LocalData()
+        self.db = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.btnTakePhoto.clicked.connect(self._snapshot)
@@ -83,11 +87,8 @@ class StartScan(QtGui.QMainWindow):
         self.ui.cmbCamera.currentIndexChanged.connect(self.changeCamera)
         self.ui.txtInput.returnPressed.connect(self.getinput)
         self.camera_port = 0
-        self.camera = CameraThread(self.camera_port)
-        self.camera.camReady.connect(self.updateLiveView)
-        self.camera.imgSaved.connect(self.updatePreview)
+        self.livecam = None
         self.ui.dockSnapshotPreview.resizeEvent = self.resizePreview
-        self.camera.start()
         self.last_text = None
         self.last_image = None
         self.image_folder = "./img/"
@@ -96,6 +97,35 @@ class StartScan(QtGui.QMainWindow):
         self.live_image_format = ".jpg"
         self.record_count = 0
         self.ui.txtInput.setFocus()
+
+    def start_livecam(self):
+        if self.livecam is not None:
+            del self.livecam
+        self.livecam = CameraThread(self.camera_port)
+        self.livecam.camReady.connect(self.updateLiveView)
+        self.livecam.imgSaved.connect(self.updatePreview)
+        self.livecam.start()
+
+    def create_database(self, data_file: str='') -> bool:
+        """Creates a new data file"""
+        return data.LocalData(data_file).create_database()
+
+    def open_database(self, data_file: str='') -> bool:
+        """Opens the database and sets the DB object"""
+        if data_file == '':
+            self.db = data.LocalData()
+        else:
+            self.db = data.LocalData(data_file)
+        return self.db.open_database()
+
+    def close_database(self):
+        if self.data_file() != '': self.db = None
+
+    def data_file(self) -> str:
+        """Returns the currently connected database"""
+        if self.db is not None:
+            return self.db.data_file
+        return ''
 
     def closeEvent(self, QCloseEvent):
         """Gracefully shutdown the camera"""

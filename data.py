@@ -1,22 +1,65 @@
 import sqlite3
 import arrow
+import os
 
 class LocalData():
-    def __init__(self, data_file='./data.db'):
+
+    def __init__(self, data_file: str='./data.db'):
         self.data_file = data_file
-        self.conn = sqlite3.connect(data_file)
+        self.conn = None
+        self.cur = None
+        self.rows = None
+
+    def __del__(self):
+        if self.conn is not None:
+            self.conn.commit()
+            self.conn.close()
+
+    def open_database(self, data_file: str='') -> bool:
+        """
+        :param data_file: str
+        :return: bool
+        Connects to a database file if it exists
+        Creates new database if it doesn't exist
+        Returns True if successfully connected
+        Returns False otherwise
+        """
+        if data_file == '':
+            if self.data_file == '': return False
+        else:
+            self.data_file = data_file
+        # if database doesn't exist, create it
+        if not os.path.exists(self.data_file):
+            if not self.create_database(self.data_file): return False
+        self.rows = None
+        self.conn = sqlite3.connect(self.data_file)
         self.conn.row_factory = sqlite3.Row
         self.cur = self.conn.cursor()
-        self.rows = None
-        # Set up the database tables
-        self._initial_setup()
+        return True
 
-    def _initial_setup(self):
-        """Creates base tables if they don't exist"""
-        self.conn.execute('CREATE TABLE IF NOT EXISTS tblInventory ('
-                          'date_time TEXT, '
-                          'barcode_id TEXT,'
-                          'img_file TEXT)')
+    def create_database(self, data_file: str='') -> bool:
+        """
+        :param data_file: str
+        :return: bool
+        Creates a database with the correct structure.
+        Returns True if database is successfully created
+        Returns False if database already exists or could not be created
+        """
+        if data_file == '':
+            if self.data_file == '':
+                return False
+            else:
+                data_file = self.data_file
+        if os.path.exists(data_file): return False
+        conn = sqlite3.connect(data_file)
+        schema = open('./sql/schema.sql', mode='r').read()
+        conn.executescript(schema)
+        conn.commit()
+        conn.close()
+        if os.path.exists(data_file):
+            return True
+        else:
+            return False
 
     def get_rows(self):
         """Gets all data from the database and fills the rows variable"""
@@ -73,7 +116,3 @@ class LocalData():
                          'date_time=? '
                          'WHERE ROWID=?',
                          (barcode_id, img_file, str(date_time), row_id))
-
-    def __del__(self):
-        self.conn.commit()
-        self.conn.close()

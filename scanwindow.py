@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scanwindow.ui'
 #
-# Created: Sun May 29 21:05:38 2016
+# Created: Sun Jun  5 22:23:54 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,7 +75,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 727, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 727, 23))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menu_File = QtGui.QMenu(self.menubar)
         self.menu_File.setObjectName(_fromUtf8("menu_File"))
